@@ -1,0 +1,50 @@
+export default function Hero() {
+  return (
+    <section
+      id="inicio"
+      className="relative flex min-h-screen items-center justify-center px-6 pt-24"
+    >
+      <div className="absolute inset-0">
+        <img
+          src="/casal.jpg"
+          alt="Foto do casal"
+          className="h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/35" />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-4xl text-center text-white">
+        <p className="mb-4 text-sm uppercase tracking-[0.35em]">
+          Estamos nos casando
+        </p>
+
+        <h1 className="text-5xl font-semibold md:text-7xl">
+          Nicolas & Amanda
+        </h1>
+
+        <p className="mt-5 text-lg md:text-2xl">11 de Abril de 2026</p>
+
+        <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-white/90 md:text-lg">
+          Estamos muito felizes em compartilhar esse momento com vocês e
+          celebrar nosso grande dia ao lado de pessoas especiais.
+        </p>
+
+        <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <a
+            href="#presenca"
+            className="rounded-full bg-white px-6 py-3 font-medium text-black transition hover:opacity-90"
+          >
+            Confirmar presença
+          </a>
+
+          <a
+            href="#presentes"
+            className="rounded-full border border-white px-6 py-3 font-medium text-white transition hover:bg-white hover:text-black"
+          >
+            Lista de presentes
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
