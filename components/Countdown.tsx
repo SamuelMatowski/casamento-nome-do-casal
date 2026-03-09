@@ -10,7 +10,7 @@ type TimeLeft = {
 };
 
 export default function Countdown() {
-  const weddingDate = new Date("2026-04-11T19:00:00").getTime();
+  const weddingDate = new Date("2026-04-12T12:00:00").getTime();
 
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
     days: 0,
@@ -39,36 +39,37 @@ export default function Countdown() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [weddingDate]);
+  }, []);
 
   return (
-    <section className="bg-[#f8f5ef] px-6 py-16">
+    <section className="bg-[var(--soft-bg)] px-6 py-16">
       <div className="mx-auto max-w-5xl text-center">
-        <p className="mb-3 text-sm uppercase tracking-[0.25em] text-[#9a7b4f]">
+        <p className="mb-3 text-sm uppercase tracking-[0.25em] text-[var(--primary)]">
           Contagem regressiva
         </p>
+
         <h2 className="mb-10 text-3xl font-semibold md:text-4xl">
           Faltam poucos momentos para o nosso grande dia
         </h2>
 
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="text-4xl font-bold">{timeLeft.days}</p>
+          <div className="rounded-2xl bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md">
+            <p className="text-4xl font-bold text-[var(--primary)]">{timeLeft.days}</p>
             <span className="mt-2 block text-sm text-gray-600">Dias</span>
           </div>
 
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="text-4xl font-bold">{timeLeft.hours}</p>
+          <div className="rounded-2xl bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md">
+            <p className="text-4xl font-bold text-[var(--primary)]">{timeLeft.hours}</p>
             <span className="mt-2 block text-sm text-gray-600">Horas</span>
           </div>
 
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="text-4xl font-bold">{timeLeft.minutes}</p>
+          <div className="rounded-2xl bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md">
+            <p className="text-4xl font-bold text-[var(--primary)]">{timeLeft.minutes}</p>
             <span className="mt-2 block text-sm text-gray-600">Minutos</span>
           </div>
 
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="text-4xl font-bold">{timeLeft.seconds}</p>
+          <div className="rounded-2xl bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md">
+            <p className="text-4xl font-bold text-[var(--primary)]">{timeLeft.seconds}</p>
             <span className="mt-2 block text-sm text-gray-600">Segundos</span>
           </div>
         </div>

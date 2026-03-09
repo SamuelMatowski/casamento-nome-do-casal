@@ -13,7 +13,7 @@ export default function Home() {
       <section id="historia" className="px-6 py-20">
         <div className="mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-2">
           <div>
-            <p className="text-sm uppercase tracking-[0.25em] text-[#9a7b4f]">
+            <p className="text-sm uppercase tracking-[0.25em] text-[#6a76a1]">
               Nossa História
             </p>
             <h2 className="mt-3 text-3xl font-semibold md:text-4xl">
@@ -44,7 +44,7 @@ export default function Home() {
       <section id="casamento" className="bg-white px-6 py-20">
         <div className="mx-auto max-w-6xl">
           <div className="text-center">
-            <p className="text-sm uppercase tracking-[0.25em] text-[#9a7b4f]">
+            <p className="text-sm uppercase tracking-[0.25em] text-[#6a76a1]">
               O Casamento
             </p>
             <h2 className="mt-3 text-3xl font-semibold md:text-4xl">
@@ -53,26 +53,25 @@ export default function Home() {
           </div>
 
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            <div className="rounded-2xl bg-[#f8f5ef] p-6">
-              <h3 className="text-xl font-semibold">Cerimônia</h3>
-              <p className="mt-3 text-gray-700">11 de Abril de 2026</p>
-              <p className="text-gray-700">19:00</p>
+            <div className="rounded-2xl bg-[var(--soft-bg)] p-6 transition duration-300 hover:-translate-y-1 hover:shadow-md">
+              <h3 className="text-xl font-semibold">Data</h3>
+              <p className="mt-3 text-gray-700">12 de Abril de 2026</p>
             </div>
 
-            <div className="rounded-2xl bg-[#f8f5ef] p-6">
-              <h3 className="text-xl font-semibold">Recepção</h3>
-              <p className="mt-3 text-gray-700">Logo após a cerimônia</p>
+            <div className="rounded-2xl bg-[var(--soft-bg)] p-6 transition duration-300 hover:-translate-y-1 hover:shadow-md">
+              <h3 className="text-xl font-semibold">Horário</h3>
+              <p className="mt-3 text-gray-700">12:00 às 20:00</p>
             </div>
 
-            <div className="rounded-2xl bg-[#f8f5ef] p-6">
+            <div className="rounded-2xl bg-[var(--soft-bg)] p-6 transition duration-300 hover:-translate-y-1 hover:shadow-md">
               <h3 className="text-xl font-semibold">Local</h3>
-              <p className="mt-3 text-gray-700">Espaço Garden Eventos</p>
-              <p className="text-gray-700">Rua Exemplo, 123</p>
+              <p className="mt-3 text-gray-700">APCEF/PR</p>
+              <p className="text-gray-700">Salão Gourmet 11</p>
             </div>
 
-            <div className="rounded-2xl bg-[#f8f5ef] p-6">
+            <div className="rounded-2xl bg-[var(--soft-bg)] p-6 transition duration-300 hover:-translate-y-1 hover:shadow-md">
               <h3 className="text-xl font-semibold">Traje</h3>
-              <p className="mt-3 text-gray-700">Esporte fino</p>
+              <p className="mt-3 text-gray-700">Casual </p>
             </div>
           </div>
         </div>
@@ -81,7 +80,7 @@ export default function Home() {
       <section id="presentes" className="px-6 py-20">
         <div className="mx-auto max-w-6xl">
           <div className="text-center">
-            <p className="text-sm uppercase tracking-[0.25em] text-[#9a7b4f]">
+            <p className="text-sm uppercase tracking-[0.25em] text-[#6a76a1]">
               Lista de Presentes
             </p>
             <h2 className="mt-3 text-3xl font-semibold md:text-4xl">
@@ -96,17 +95,35 @@ export default function Home() {
 
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             <GiftCard name="Jantar romântico" price="150,00" />
-<GiftCard name="Passeio especial" price="200,00" />
-<GiftCard name="Jogo de panelas" price="300,00" />
-<GiftCard name="Lua de mel" price="500,00" />
-<GiftCard name="Sofá novo" price="1000,00" />
-<GiftCard name="Garrafa de vinho" price="120,00" />
-<GiftCard name="Passagem de Avião" price="3000,00" /> 
-<GiftCard name="Passeios Turísticos" price="200,00" />
-<GiftCard name="Kit de Peças da KitchenAid" price="550,00" />
-<GiftCard name="Geladeira " price="4000,00" />
-<GiftCard name="Ayr Frier" price="400,00" />
-<GiftCard name="Kit de Talheres" price="200,00" />
+            <GiftCard name="Passeio especial" price="200,00" />
+            <GiftCard name="Jogo de panelas" price="300,00" />
+            <GiftCard name="Lua de mel" price="500,00" />
+            <GiftCard name="Sofá novo" price="1000,00" />
+            <GiftCard name="Garrafa de vinho" price="120,00" />
+            <GiftCard name="Passagem de Avião" price="3000,00" />
+            <GiftCard name="Passeios Turísticos" price="200,00" />
+            <GiftCard name="Kit de Peças da KitchenAid" price="550,00" />
+            <GiftCard name="Geladeira" price="4000,00" />
+            <GiftCard name="Air Fryer" price="400,00" />
+            <GiftCard name="Kit de Talheres" price="200,00" />
+            <GiftCard name="Jogo de PS5" price="250,00" />
+            <GiftCard name="Jogo de Cama" price="200,00" />
+            <GiftCard name="Jogo de Toalha" price="200,00" />
+            <GiftCard name="Jantar romântico" price="150,00" />
+            <GiftCard name="Passeio especial" price="200,00" />
+            <GiftCard name="Jogo de panelas" price="300,00" />
+            <GiftCard name="Lua de mel" price="500,00" />
+            <GiftCard name="Sofá novo" price="1000,00" />
+            <GiftCard name="Garrafa de vinho" price="120,00" />
+            <GiftCard name="Passagem de Avião" price="3000,00" />
+            <GiftCard name="Passeios Turísticos" price="200,00" />
+            <GiftCard name="Kit de Peças da KitchenAid" price="550,00" />
+            <GiftCard name="Geladeira" price="4000,00" />
+            <GiftCard name="Air Fryer" price="400,00" />
+            <GiftCard name="Kit de Talheres" price="200,00" />
+            <GiftCard name="Jogo de PS5" price="250,00" />
+            <GiftCard name="Jogo de Cama" price="200,00" />
+            <GiftCard name="Jogo de Toalha" price="200,00" />
           </div>
         </div>
       </section>
@@ -114,7 +131,7 @@ export default function Home() {
       <section id="fotos" className="bg-white px-6 py-20">
         <div className="mx-auto max-w-6xl">
           <div className="text-center">
-            <p className="text-sm uppercase tracking-[0.25em] text-[#9a7b4f]">
+            <p className="text-sm uppercase tracking-[0.25em] text-[#6a76a1]">
               Fotos
             </p>
             <h2 className="mt-3 text-3xl font-semibold md:text-4xl">
@@ -144,7 +161,7 @@ export default function Home() {
 
       <section id="presenca" className="px-6 py-20">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm uppercase tracking-[0.25em] text-[#9a7b4f]">
+          <p className="text-sm uppercase tracking-[0.25em] text-[#6a76a1]">
             Presença
           </p>
           <h2 className="mt-3 text-3xl font-semibold md:text-4xl">
@@ -158,26 +175,25 @@ export default function Home() {
             <input
               type="text"
               placeholder="Seu nome"
-              className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#9a7b4f]"
+              className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#6a76a1]"
             />
             <input
               type="text"
               placeholder="Telefone"
-              className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#9a7b4f]"
+              className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#6a76a1]"
             />
             <input
               type="number"
               placeholder="Quantas pessoas irão?"
-              className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#9a7b4f]"
+              className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#6a76a1]"
             />
             <textarea
               placeholder="Mensagem opcional"
-              className="min-h-[140px] w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#9a7b4f]"
+              className="min-h-[140px] w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#6a76a1]"
             />
             <button
               type="submit"
-              className="w-full rounded-full bg-[#9a7b4f] px-6 py-4 font-medium text-white transition hover:opacity-90"
-            >
+              className="w-full rounded-full bg-[#6a76a1] px-6 py-4 font-medium text-white transition duration-300 hover:bg-[#596493]">
               Confirmar presença
             </button>
           </form>
@@ -187,19 +203,22 @@ export default function Home() {
       <section id="local" className="bg-white px-6 py-20">
         <div className="mx-auto max-w-6xl">
           <div className="text-center">
-            <p className="text-sm uppercase tracking-[0.25em] text-[#9a7b4f]">
+            <p className="text-sm uppercase tracking-[0.25em] text-[#6a76a1]">
               Local
             </p>
             <h2 className="mt-3 text-3xl font-semibold md:text-4xl">
               Como chegar
             </h2>
-            <p className="mt-4 text-gray-700">Espaço Garden Eventos</p>
-            <p className="text-gray-700">Rua Exemplo, 123 - Cidade / Estado</p>
+            <p className="mt-4 text-gray-700">APCEF/PR</p>
+            <p className="text-gray-700">
+              Rua Cap. Leônidas Marques, 3020 - Uberaba
+            </p>
+            <p className="text-gray-700">Curitiba/PR - Salão Gourmet 11</p>
           </div>
 
           <div className="mt-10 overflow-hidden rounded-3xl shadow-sm">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18..."
+              src="https://www.google.com/maps?q=R.%20Cap.%20Le%C3%B4nidas%20Marques,%203020,%20Uberaba,%20Curitiba,%20PR&output=embed"
               width="100%"
               height="420"
               loading="lazy"
@@ -209,10 +228,10 @@ export default function Home() {
 
           <div className="mt-6 text-center">
             <a
-              href="https://maps.google.com"
+              href="https://www.google.com/maps/search/?api=1&query=R.%20Cap.%20Le%C3%B4nidas%20Marques,%203020,%20Uberaba,%20Curitiba,%20PR"
               target="_blank"
               rel="noreferrer"
-              className="inline-block rounded-full border border-[#9a7b4f] px-6 py-3 font-medium text-[#9a7b4f] transition hover:bg-[#9a7b4f] hover:text-white"
+              className="inline-block rounded-full border border-[#6a76a1] px-6 py-3 font-medium text-[#6a76a1] transition duration-300 hover:bg-[#6a76a1] hover:text-white"
             >
               Abrir no Google Maps
             </a>
@@ -223,7 +242,7 @@ export default function Home() {
       <footer className="bg-[#2b2b2b] px-6 py-12 text-white">
         <div className="mx-auto max-w-6xl text-center">
           <h3 className="text-2xl font-semibold">Nicolas & Amanda</h3>
-          <p className="mt-3 text-white/80">11 de Abril de 2026</p>
+          <p className="mt-3 text-white/80">12 de Abril de 2026</p>
           <p className="mt-4 text-white/80">
             Estamos ansiosos para celebrar esse momento com vocês.
           </p>

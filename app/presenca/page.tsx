@@ -25,9 +25,11 @@ export default function Presenca() {
             className="rounded-lg border p-3"
           />
 
-          <button className="rounded-lg bg-black p-3 text-white">
-            Confirmar presença
-          </button>
+         <button
+  className="mt-6 w-full rounded-full bg-[#6a76a1] px-6 py-4 text-white transition duration-300 hover:bg-[#596493]"
+>
+  Confirmar presença
+</button>
         </form>
       </section>
     </main>

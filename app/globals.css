@@ -1,14 +1,26 @@
 @import "tailwindcss";
 
-html{
-  scroll-behavior:smooth;
+html {
+  scroll-behavior: smooth;
 }
 
-body{
-  background:#fcfaf7;
-  color:#2b2b2b;
+body {
+  margin: 0;
+  padding: 0;
+  background: #fcfaf7;
+  color: #2b2b2b;
 }
 
-h1,h2,h3{
-  letter-spacing:0.02em;
+:root {
+  --primary: #6a76a1;
+  --primary-dark: #56638d;
+  --soft-bg: #eef1f8;
+  --text: #2b2b2b;
+  --cream: #fcfaf7;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: 0.02em;
 }
