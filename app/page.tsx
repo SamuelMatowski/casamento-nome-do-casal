@@ -1,9 +1,17 @@
+"use client";
+
+import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Countdown from "@/components/Countdown";
 import GiftCard from "@/components/GiftCard";
+import GiftModal from "@/components/GiftModal";
+import { gifts } from "../data/gifts";
+import { Gift } from "../models/gift";
 
 export default function Home() {
+  const [selectedGift, setSelectedGift] = useState<Gift | null>(null);
+
   return (
     <main className="bg-[#fcfaf7] text-[#2b2b2b]">
       <Navbar />
@@ -78,55 +86,28 @@ export default function Home() {
       </section>
 
       <section id="presentes" className="px-6 py-20">
-        <div className="mx-auto max-w-6xl">
-          <div className="text-center">
-            <p className="text-sm uppercase tracking-[0.25em] text-[#6a76a1]">
-              Lista de Presentes
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold md:text-4xl">
-              Sugestões para nos presentear
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl leading-7 text-gray-700">
-              Criamos algumas sugestões com muito carinho. Os presentes são
-              simbólicos e nos ajudarão a viver esse novo capítulo com ainda
-              mais alegria.
-            </p>
-          </div>
+  <div className="mx-auto max-w-6xl">
+    <div className="text-center">
+      <p className="text-sm uppercase tracking-[0.25em] text-[#6a76a1]">
+        Lista de Presentes
+      </p>
+      <h2 className="mt-3 text-3xl font-semibold md:text-4xl">
+        Sugestões para nos presentear
+      </h2>
+      <p className="mx-auto mt-4 max-w-2xl leading-7 text-gray-700">
+        Criamos algumas sugestões com muito carinho. Os presentes são
+        simbólicos e nos ajudarão a viver esse novo capítulo com ainda
+        mais alegria.
+      </p>
+    </div>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            <GiftCard name="Jantar romântico" price="150,00" />
-            <GiftCard name="Passeio especial" price="200,00" />
-            <GiftCard name="Jogo de panelas" price="300,00" />
-            <GiftCard name="Lua de mel" price="500,00" />
-            <GiftCard name="Sofá novo" price="1000,00" />
-            <GiftCard name="Garrafa de vinho" price="120,00" />
-            <GiftCard name="Passagem de Avião" price="3000,00" />
-            <GiftCard name="Passeios Turísticos" price="200,00" />
-            <GiftCard name="Kit de Peças da KitchenAid" price="550,00" />
-            <GiftCard name="Geladeira" price="4000,00" />
-            <GiftCard name="Air Fryer" price="400,00" />
-            <GiftCard name="Kit de Talheres" price="200,00" />
-            <GiftCard name="Jogo de PS5" price="250,00" />
-            <GiftCard name="Jogo de Cama" price="200,00" />
-            <GiftCard name="Jogo de Toalha" price="200,00" />
-            <GiftCard name="Jantar romântico" price="150,00" />
-            <GiftCard name="Passeio especial" price="200,00" />
-            <GiftCard name="Jogo de panelas" price="300,00" />
-            <GiftCard name="Lua de mel" price="500,00" />
-            <GiftCard name="Sofá novo" price="1000,00" />
-            <GiftCard name="Garrafa de vinho" price="120,00" />
-            <GiftCard name="Passagem de Avião" price="3000,00" />
-            <GiftCard name="Passeios Turísticos" price="200,00" />
-            <GiftCard name="Kit de Peças da KitchenAid" price="550,00" />
-            <GiftCard name="Geladeira" price="4000,00" />
-            <GiftCard name="Air Fryer" price="400,00" />
-            <GiftCard name="Kit de Talheres" price="200,00" />
-            <GiftCard name="Jogo de PS5" price="250,00" />
-            <GiftCard name="Jogo de Cama" price="200,00" />
-            <GiftCard name="Jogo de Toalha" price="200,00" />
-          </div>
-        </div>
-      </section>
+    <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {gifts.map((gift) => (
+  <GiftCard key={gift.id} gift={gift} onPresent={setSelectedGift} />
+))}
+    </div>
+  </div>
+</section>
 
       <section id="fotos" className="bg-white px-6 py-20">
         <div className="mx-auto max-w-6xl">
@@ -256,6 +237,11 @@ export default function Home() {
           </div>
         </div>
       </footer>
+      <GiftModal
+  gift={selectedGift}
+  isOpen={!!selectedGift}
+  onClose={() => setSelectedGift(null)}
+/>
     </main>
   );
 }
