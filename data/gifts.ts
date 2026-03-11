@@ -1,4 +1,4 @@
-import { Gift } from "../models/gift";
+import type { Gift } from "../models/gift";
 
 export const gifts: Gift[] = [
   {
@@ -8,16 +8,7 @@ export const gifts: Gift[] = [
     totalValue: 500,
     quotaValue: 100,
     totalQuotas: 5,
-    paidQuotas: 2,
-  },
-  {
-    id: "jogo-de-panelas",
-    name: "Jogo de panelas",
-    description: "Um presente para começarmos nossa casa com carinho.",
-    totalValue: 300,
-    quotaValue: 100,
-    totalQuotas: 3,
-    paidQuotas: 1,
+    paidQuotas: 0,
   },
   {
     id: "sofa-novo",
@@ -26,7 +17,7 @@ export const gifts: Gift[] = [
     totalValue: 1000,
     quotaValue: 100,
     totalQuotas: 10,
-    paidQuotas: 4,
+    paidQuotas: 0,
   },
   {
     id: "air-fryer",
