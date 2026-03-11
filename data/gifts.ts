@@ -20,7 +20,7 @@ description: "Curso profissional",
 image: "/gifts/curso.png",
 totalValue: 196000,
 quotaValue: 196,
-totalQuotas: 100,
+totalQuotas: 1000,
 paidQuotas: 0
 },
 
