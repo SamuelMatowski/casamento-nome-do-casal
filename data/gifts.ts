@@ -18,7 +18,7 @@ id: "curso-culinaria",
 name: "Curso chique de culinária",
 description: "Curso profissional",
 image: "/gifts/curso.png",
-totalValue: 19600,
+totalValue: 196000,
 quotaValue: 196,
 totalQuotas: 100,
 paidQuotas: 0
