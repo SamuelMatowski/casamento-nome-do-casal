@@ -6,7 +6,7 @@ export default function Hero() {
     >
       <div className="absolute inset-0">
         <img
-          src="/casal.jpg"
+          src="/casal.png"
           alt="Foto do casal"
           className="h-full w-full object-cover"
         />
@@ -19,7 +19,7 @@ export default function Hero() {
         </p>
 
         <h1 className="text-5xl font-semibold md:text-7xl">
-          Nicolas & Amanda
+          Amanda & Nicolas
         </h1>
 
         <p className="mt-5 text-lg md:text-2xl">12 de Abril de 2026</p>

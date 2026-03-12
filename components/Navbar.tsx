@@ -6,7 +6,7 @@ export default function Navbar() {
           href="#inicio"
           className="text-xl font-semibold tracking-wide text-[var(--primary)]"
         >
-          Nicolas & Amanda
+          Amanda & Nicolas
         </a>
 
         <div className="hidden gap-6 text-sm md:flex">

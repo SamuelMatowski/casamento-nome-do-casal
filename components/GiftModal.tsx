@@ -186,6 +186,14 @@ export default function GiftModal({
 
         <p className="mt-4 text-gray-600">{selectedGift.description}</p>
 
+        <div className="mt-6 overflow-hidden rounded-2xl bg-gray-100">
+  <img
+    src={selectedGift.image}
+    alt={selectedGift.name}
+    className="w-full object-contain"
+  />
+</div>
+
         <div className="mt-6 rounded-2xl bg-[#f5f7fc] p-4">
           <p className="text-sm text-gray-700">
             Valor da cota:{" "}

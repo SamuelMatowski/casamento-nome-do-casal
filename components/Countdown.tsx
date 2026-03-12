@@ -49,7 +49,7 @@ export default function Countdown() {
         </p>
 
         <h2 className="mb-10 text-3xl font-semibold md:text-4xl">
-          Faltam poucos momentos para o nosso grande dia
+          Faltam poucos dias para o nosso grande momento 
         </h2>
 
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">

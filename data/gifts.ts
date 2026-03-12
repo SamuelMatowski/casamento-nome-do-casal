@@ -407,6 +407,6 @@ totalValue: 3000,
 quotaValue: 300,
 totalQuotas: 10,
 paidQuotas: 0
-}
+},
 
 ];

@@ -11,11 +11,11 @@ export default function GiftCard({ gift, onPresent }: GiftCardProps) {
 
   return (
     <div className="overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md">
-      <div className="h-56 w-full bg-gray-100">
+      <div className="h-64 w-full overflow-hidden bg-gray-100">
         <img
           src={gift.image}
           alt={gift.name}
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover object-center"
         />
       </div>
 
