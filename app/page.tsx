@@ -186,43 +186,53 @@ export default function Home() {
       </section>
 
       <section id="local" className="bg-white px-6 py-20">
-        <div className="mx-auto max-w-6xl">
-          <div className="text-center">
-            <p className="text-sm uppercase tracking-[0.25em] text-[#6a76a1]">
-              Local
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold md:text-4xl">
-              Como chegar
-            </h2>
-            <p className="mt-4 text-gray-700">APCEF/PR</p>
-            <p className="text-gray-700">
-              Rua Cap. Leônidas Marques, 3020 - Uberaba
-            </p>
-            <p className="text-gray-700">Curitiba/PR - Salão Gourmet 11</p>
-          </div>
+  <div className="mx-auto max-w-6xl">
+    <div className="text-center">
+      <p className="text-sm uppercase tracking-[0.25em] text-[#6a76a1]">
+        Local
+      </p>
+      <h2 className="mt-3 text-3xl font-semibold md:text-4xl">
+        Como chegar
+      </h2>
 
-          <div className="mt-10 overflow-hidden rounded-3xl shadow-sm">
-            <iframe
-              src="https://www.google.com/maps?q=R.%20Cap.%20Le%C3%B4nidas%20Marques,%203020,%20Uberaba,%20Curitiba,%20PR&output=embed"
-              width="100%"
-              height="420"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </div>
+      <div className="mt-6 space-y-1 text-gray-700">
+        <p className="text-lg font-semibold text-[#6a76a1]">APCEF/PR</p>
+        <p>Rua Cap. Leônidas Marques, 3020 - Uberaba</p>
+        <p>Curitiba/PR - Salão Gourmet 11</p>
+      </div>
+    </div>
 
-          <div className="mt-6 text-center">
-            <a
-              href="https://www.google.com/maps/search/?api=1&query=R.%20Cap.%20Le%C3%B4nidas%20Marques,%203020,%20Uberaba,%20Curitiba,%20PR"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-block rounded-full border border-[#6a76a1] px-6 py-3 font-medium text-[#6a76a1] transition duration-300 hover:bg-[#6a76a1] hover:text-white"
-            >
-              Abrir no Google Maps
-            </a>
-          </div>
-        </div>
-      </section>
+    <div className="mt-10 overflow-hidden rounded-3xl shadow-sm">
+      <iframe
+        src="https://maps.google.com/maps?hl=pt-BR&q=-25.48869575161709,-49.2095834424517&z=17&output=embed"
+        width="100%"
+        height="420"
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+      />
+    </div>
+
+    <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
+      <a
+        href="https://www.google.com/maps/search/?api=1&query=-25.48869575161709,-49.2095834424517"
+        target="_blank"
+        rel="noreferrer"
+        className="inline-block rounded-full border border-[#6a76a1] px-6 py-3 font-medium text-[#6a76a1] transition duration-300 hover:bg-[#6a76a1] hover:text-white"
+      >
+        Ver entrada exata
+      </a>
+
+      <a
+        href="https://www.google.com/maps/dir/?api=1&destination=-25.48869575161709,-49.2095834424517"
+        target="_blank"
+        rel="noreferrer"
+        className="inline-block rounded-full bg-[#6a76a1] px-6 py-3 font-medium text-white transition duration-300 hover:bg-[#596493]"
+      >
+        Traçar rota
+      </a>
+    </div>
+  </div>
+</section>
 
       <footer className="bg-[#2b2b2b] px-6 py-12 text-white">
         <div className="mx-auto max-w-6xl text-center">
