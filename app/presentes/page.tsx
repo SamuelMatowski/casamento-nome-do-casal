@@ -72,11 +72,13 @@ export default function PresentesPage() {
         </div>
       </section>
 
-      <GiftModal
-        gift={selectedGift}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-      />
+      {selectedGift && (
+  <GiftModal
+    gift={selectedGift}
+    isOpen={isModalOpen}
+    onClose={handleCloseModal}
+  />
+)}
     </main>
   );
 }
