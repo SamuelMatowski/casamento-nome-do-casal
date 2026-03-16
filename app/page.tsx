@@ -209,7 +209,7 @@ Agora, perto de completar 10 anos de relacionamento, chega o momento de celebrar
     >
       <input
         type="text"
-        placeholder="Seu nome"
+        placeholder="Seu nome completo"
         value={name}
         onChange={(e) => setName(e.target.value)}
         className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#6a76a1]"
