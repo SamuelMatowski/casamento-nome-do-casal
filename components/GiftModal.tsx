@@ -8,6 +8,7 @@ type GiftModalProps = {
   gift: Gift;
   isOpen: boolean;
   onClose: () => void;
+  onPaymentConfirmed?: () => void;
 };
 
 type PixResponse = {
@@ -24,6 +25,7 @@ export default function GiftModal({
   gift,
   isOpen,
   onClose,
+  onPaymentConfirmed,
 }: GiftModalProps) {
   const maxAvailableQuotas = Math.max(gift.totalQuotas - gift.paidQuotas, 0);
 
@@ -97,6 +99,9 @@ export default function GiftModal({
             }
 
             setPaymentConfirmed(true);
+
+            // Atualiza os cards e a barra de progresso
+            if (onPaymentConfirmed) onPaymentConfirmed();
           }
         } catch {
           // silencia erros de polling

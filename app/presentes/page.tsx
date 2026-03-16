@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import GiftCard from "@/components/GiftCard";
 import GiftModal from "@/components/GiftModal";
@@ -12,7 +12,7 @@ export default function PresentesPage() {
   const [selectedGift, setSelectedGift] = useState<Gift | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  async function loadGiftProgress() {
+  const loadGiftProgress = useCallback(async () => {
     try {
       const response = await fetch(`/api/gifts?t=${Date.now()}`, {
         cache: "no-store",
@@ -29,15 +29,24 @@ export default function PresentesPage() {
         }));
 
         setGifts(updatedGifts);
+
+        // Atualiza o gift selecionado no modal também
+        setSelectedGift((prev) => {
+          if (!prev) return null;
+          return {
+            ...prev,
+            paidQuotas: paidQuotasByGift[prev.id] || 0,
+          };
+        });
       }
     } catch (error) {
       console.error("Erro ao carregar progresso dos presentes:", error);
     }
-  }
+  }, []);
 
   useEffect(() => {
     loadGiftProgress();
-  }, []);
+  }, [loadGiftProgress]);
 
   function handlePresent(gift: Gift) {
     setSelectedGift(gift);
@@ -47,8 +56,6 @@ export default function PresentesPage() {
   function handleCloseModal() {
     setIsModalOpen(false);
     setSelectedGift(null);
-
-    // recarrega a barra quando fechar o modal
     loadGiftProgress();
   }
 
@@ -73,12 +80,13 @@ export default function PresentesPage() {
       </section>
 
       {selectedGift && (
-  <GiftModal
-    gift={selectedGift}
-    isOpen={isModalOpen}
-    onClose={handleCloseModal}
-  />
-)}
+        <GiftModal
+          gift={selectedGift}
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          onPaymentConfirmed={loadGiftProgress}
+        />
+      )}
     </main>
   );
 }
