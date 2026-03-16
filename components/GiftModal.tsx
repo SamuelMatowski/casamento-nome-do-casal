@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import type { Gift } from "@/models/gift";
 
@@ -36,10 +36,74 @@ export default function GiftModal({
   const [loadingPix, setLoadingPix] = useState(false);
   const [pixData, setPixData] = useState<PixResponse | null>(null);
   const [error, setError] = useState("");
+  const [paymentConfirmed, setPaymentConfirmed] = useState(false);
+
+  const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const totalAmount = useMemo(() => {
     return quotaQuantity * gift.quotaValue;
   }, [quotaQuantity, gift.quotaValue]);
+
+  const stopPolling = useCallback(() => {
+    if (pollingRef.current) {
+      clearInterval(pollingRef.current);
+      pollingRef.current = null;
+    }
+  }, []);
+
+  type ContributionData = {
+    giftId: string;
+    giftName: string;
+    guestName: string;
+    payerName: string;
+    message: string;
+    quotaQuantity: number;
+    totalAmount: number;
+  };
+
+  const startPolling = useCallback(
+    (paymentId: string | number, contribution: ContributionData) => {
+      stopPolling();
+
+      pollingRef.current = setInterval(async () => {
+        try {
+          const res = await fetch(`/api/check-payment?id=${paymentId}`, {
+            cache: "no-store",
+          });
+          const data = await res.json();
+
+          if (data.status === "approved") {
+            stopPolling();
+
+            // Salva a contribuição confirmada no Google Sheets
+            try {
+              await fetch("/api/contributions", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  giftId: contribution.giftId,
+                  giftName: contribution.giftName,
+                  giverName: contribution.guestName,
+                  pixPayerName: contribution.payerName,
+                  message: contribution.message,
+                  quotaQuantity: contribution.quotaQuantity,
+                  totalValue: contribution.totalAmount,
+                  status: "confirmado",
+                }),
+              });
+            } catch (saveErr) {
+              console.error("Erro ao salvar contribuição:", saveErr);
+            }
+
+            setPaymentConfirmed(true);
+          }
+        } catch {
+          // silencia erros de polling
+        }
+      }, 5000); // verifica a cada 5 segundos
+    },
+    [stopPolling]
+  );
 
   useEffect(() => {
     if (!isOpen) return;
@@ -52,7 +116,19 @@ export default function GiftModal({
     setLoadingPix(false);
     setPixData(null);
     setError("");
-  }, [isOpen, gift.id, maxAvailableQuotas]);
+    setPaymentConfirmed(false);
+    stopPolling();
+  }, [isOpen, gift.id, maxAvailableQuotas, stopPolling]);
+
+  // Para o polling quando o modal fecha
+  useEffect(() => {
+    if (!isOpen) stopPolling();
+  }, [isOpen, stopPolling]);
+
+  // Cleanup ao desmontar
+  useEffect(() => {
+    return () => stopPolling();
+  }, [stopPolling]);
 
   if (!isOpen) return null;
 
@@ -82,6 +158,7 @@ export default function GiftModal({
       setError("");
       setLoadingPix(true);
       setPixData(null);
+      setPaymentConfirmed(false);
 
       if (maxAvailableQuotas <= 0) {
         setError("Este presente já teve todas as cotas preenchidas.");
@@ -132,6 +209,19 @@ export default function GiftModal({
       }
 
       setPixData(data);
+
+      // Inicia polling para detectar confirmação automática
+      if (data.paymentId) {
+        startPolling(data.paymentId, {
+          giftId: gift.id,
+          giftName: gift.name,
+          guestName: guestName.trim(),
+          payerName: payerName.trim(),
+          message: message.trim(),
+          quotaQuantity,
+          totalAmount,
+        });
+      }
     } catch (err) {
       console.error("Erro ao gerar PIX:", err);
 
@@ -158,8 +248,10 @@ export default function GiftModal({
   };
 
   const handleClose = () => {
+    stopPolling();
     setPixData(null);
     setError("");
+    setPaymentConfirmed(false);
     onClose();
   };
 
@@ -215,7 +307,7 @@ export default function GiftModal({
               <div className="mt-4">
                 <div className="h-3 w-full overflow-hidden rounded-full bg-gray-200">
                   <div
-                    className="h-full rounded-full bg-rose-400 transition-all"
+                    className="h-full rounded-full bg-[#6a76a1] transition-all"
                     style={{ width: `${progressPercentage}%` }}
                   />
                 </div>
@@ -223,7 +315,45 @@ export default function GiftModal({
             </div>
           </div>
 
-          {!pixData && (
+          {/* Tela de pagamento confirmado */}
+          {paymentConfirmed && (
+            <div className="flex flex-col items-center gap-4 py-8 text-center">
+              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#e4e8f3]">
+                <svg
+                  className="h-10 w-10 text-[#6a76a1]"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-[#6a76a1]">
+                Pagamento confirmado!
+              </h3>
+              <p className="text-gray-600">
+                Obrigado por presentear o casal com{" "}
+                <span className="font-semibold">{gift.name}</span>.
+              </p>
+              <p className="text-sm text-gray-500">
+                Sua contribuição foi registrada com sucesso. 🎉
+              </p>
+              <button
+                onClick={handleClose}
+                className="mt-4 rounded-full bg-[#6a76a1] px-8 py-3 font-semibold text-white transition hover:bg-[#596493]"
+              >
+                Fechar
+              </button>
+            </div>
+          )}
+
+          {/* Formulário para gerar PIX */}
+          {!pixData && !paymentConfirmed && (
             <div className="space-y-4">
               <div>
                 <label className="mb-1 block text-sm font-medium text-gray-700">
@@ -233,7 +363,7 @@ export default function GiftModal({
                   type="text"
                   value={guestName}
                   onChange={(e) => setGuestName(e.target.value)}
-                  className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-rose-400"
+                  className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#6a76a1]"
                   placeholder="Ex: João e Maria"
                 />
               </div>
@@ -246,7 +376,7 @@ export default function GiftModal({
                   type="text"
                   value={payerName}
                   onChange={(e) => setPayerName(e.target.value)}
-                  className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-rose-400"
+                  className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#6a76a1]"
                   placeholder="Ex: João da Silva"
                 />
               </div>
@@ -259,7 +389,7 @@ export default function GiftModal({
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-rose-400"
+                  className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#6a76a1]"
                   placeholder="Ex: joao@email.com"
                 />
                 <p className="mt-1 text-xs text-gray-500">
@@ -274,7 +404,7 @@ export default function GiftModal({
                 <textarea
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="min-h-[100px] w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-rose-400"
+                  className="min-h-[100px] w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#6a76a1]"
                   placeholder="Deixe uma mensagem para o casal"
                 />
               </div>
@@ -290,16 +420,16 @@ export default function GiftModal({
                   value={quotaQuantity}
                   onChange={(e) => handleQuotaChange(Number(e.target.value))}
                   disabled={maxAvailableQuotas <= 0}
-                  className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-rose-400 disabled:cursor-not-allowed disabled:bg-gray-100"
+                  className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#6a76a1] disabled:cursor-not-allowed disabled:bg-gray-100"
                 />
               </div>
 
-              <div className="rounded-2xl bg-rose-50 p-4">
+              <div className="rounded-2xl bg-[#e4e8f3] p-4">
                 <p className="text-sm text-gray-700">
                   <span className="font-semibold">Resumo:</span> {quotaQuantity}{" "}
                   cota(s) × R$ {gift.quotaValue.toFixed(2)}
                 </p>
-                <p className="mt-1 text-lg font-bold text-rose-600">
+                <p className="mt-1 text-lg font-bold text-[#6a76a1]">
                   Total: R$ {totalAmount.toFixed(2)}
                 </p>
               </div>
@@ -313,37 +443,43 @@ export default function GiftModal({
               <button
                 onClick={handleGeneratePix}
                 disabled={loadingPix || maxAvailableQuotas <= 0}
-                className="w-full rounded-2xl bg-rose-500 px-5 py-3 font-semibold text-white transition hover:bg-rose-600 disabled:cursor-not-allowed disabled:opacity-60"
+                className="w-full rounded-2xl bg-[#6a76a1] px-5 py-3 font-semibold text-white transition hover:bg-[#596493] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {loadingPix ? "Gerando PIX..." : "Gerar PIX"}
               </button>
             </div>
           )}
 
-          {pixData && (
+          {/* QR Code e código PIX */}
+          {pixData && !paymentConfirmed && (
             <div className="space-y-5">
-              <div className="rounded-2xl bg-green-50 p-4">
-                <p className="text-sm font-semibold text-green-700">
+              <div className="rounded-2xl bg-[#e4e8f3] p-4">
+                <p className="text-sm font-semibold text-[#6a76a1]">
                   PIX gerado com sucesso.
                 </p>
-                <p className="mt-1 text-sm text-green-700">
+                <p className="mt-1 text-sm text-gray-700">
                   Presente: {gift.name}
                 </p>
-                <p className="mt-1 text-sm text-green-700">
+                <p className="mt-1 text-sm text-gray-700">
                   Total: R$ {totalAmount.toFixed(2)}
                 </p>
 
-                {pixData.status && (
-                  <p className="mt-1 text-sm text-green-700">
-                    Status: <span className="font-semibold">{pixData.status}</span>
-                  </p>
-                )}
-
                 {pixData.paymentId && (
-                  <p className="mt-1 text-xs text-green-700">
+                  <p className="mt-1 text-xs text-gray-500">
                     ID do pagamento: {pixData.paymentId}
                   </p>
                 )}
+              </div>
+
+              {/* Indicador de aguardando pagamento */}
+              <div className="flex items-center gap-3 rounded-2xl border border-[#6a76a1]/20 bg-[#e4e8f3]/50 px-4 py-3">
+                <span className="relative flex h-3 w-3">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#6a76a1] opacity-75" />
+                  <span className="relative inline-flex h-3 w-3 rounded-full bg-[#6a76a1]" />
+                </span>
+                <p className="text-sm text-[#6a76a1]">
+                  Aguardando confirmação do pagamento...
+                </p>
               </div>
 
               {pixData.qr_code_base64 && (
@@ -368,7 +504,7 @@ export default function GiftModal({
                   />
                   <button
                     onClick={handleCopyPix}
-                    className="mt-3 w-full rounded-2xl bg-rose-500 px-5 py-3 font-semibold text-white transition hover:bg-rose-600"
+                    className="mt-3 w-full rounded-2xl bg-[#6a76a1] px-5 py-3 font-semibold text-white transition hover:bg-[#596493]"
                   >
                     Copiar código PIX
                   </button>
@@ -388,6 +524,7 @@ export default function GiftModal({
 
               <button
                 onClick={() => {
+                  stopPolling();
                   setPixData(null);
                   setError("");
                 }}

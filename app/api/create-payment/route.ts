@@ -28,6 +28,13 @@ export async function POST(req: Request) {
           email: body.email,
           first_name: body.name,
         },
+        metadata: {
+          gift_id: body.giftId || "",
+          gift_name: body.description || "",
+          guest_name: body.guestName || "",
+          message: body.message || "",
+          quota_quantity: body.quotaQuantity || 1,
+        },
       }),
     });
 
