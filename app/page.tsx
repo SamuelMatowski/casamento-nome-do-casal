@@ -11,6 +11,50 @@ import { Gift } from "../models/gift";
 
 export default function Home() {
   const [selectedGift, setSelectedGift] = useState<Gift | null>(null);
+  const [name, setName] = useState("");
+const [phone, setPhone] = useState("");
+const [cpf, setCpf] = useState("");
+const [message, setMessage] = useState("");
+const [loadingRsvp, setLoadingRsvp] = useState(false);
+const [rsvpFeedback, setRsvpFeedback] = useState("");
+
+const handleRsvpSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+
+  setLoadingRsvp(true);
+  setRsvpFeedback("");
+
+  try {
+    const response = await fetch("/api/rsvp", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        phone,
+        cpf,
+        message,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || "Erro ao confirmar presença.");
+    }
+
+    setRsvpFeedback("Presença confirmada com sucesso!");
+    setName("");
+    setPhone("");
+    setCpf("");
+    setMessage("");
+  } catch (error: any) {
+    setRsvpFeedback(error.message || "Erro ao confirmar presença.");
+  } finally {
+    setLoadingRsvp(false);
+  }
+};
 
   return (
     <main className="bg-[#fcfaf7] text-[#2b2b2b]">
