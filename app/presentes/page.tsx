@@ -14,7 +14,7 @@ export default function PresentesPage() {
 
   async function loadGiftProgress() {
     try {
-      const response = await fetch("/api/gifts", {
+      const response = await fetch(`/api/gifts?t=${Date.now()}`, {
         cache: "no-store",
       });
 
