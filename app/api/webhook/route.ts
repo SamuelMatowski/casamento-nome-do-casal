@@ -16,18 +16,17 @@ async function getPaymentFromMP(paymentId: string) {
 }
 
 async function saveContributionToSheets(data: Record<string, string>) {
-  const formData = new FormData();
-  for (const [key, value] of Object.entries(data)) {
-    formData.append(key, value);
-  }
-  await fetch(GOOGLE_SCRIPT_URL, { method: "POST", body: formData });
+  const params = new URLSearchParams(data);
+  await fetch(`${GOOGLE_SCRIPT_URL}?${params.toString()}`, {
+    method: "POST",
+    redirect: "follow",
+  });
 }
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    // Mercado Pago envia topic=payment quando um pagamento é atualizado
     const topic = body.type || body.topic;
     const paymentId =
       body.data?.id || body.id || String(body.resource || "").split("/").pop();
@@ -39,7 +38,6 @@ export async function POST(req: Request) {
     const payment = await getPaymentFromMP(String(paymentId));
 
     if (payment.status === "approved") {
-      // Busca os metadados salvos pelo create-payment
       const meta = payment.metadata || {};
 
       await saveContributionToSheets({
@@ -51,14 +49,12 @@ export async function POST(req: Request) {
         quotaQuantity: String(meta.quota_quantity || "1"),
         totalValue: String(payment.transaction_amount || ""),
         status: "confirmado",
-        paymentId: String(paymentId),
       });
     }
 
     return NextResponse.json({ received: true });
   } catch (error: any) {
     console.error("Erro no webhook:", error);
-    // Sempre retorna 200 para o MP não retentar indefinidamente
     return NextResponse.json({ received: true });
   }
 }
