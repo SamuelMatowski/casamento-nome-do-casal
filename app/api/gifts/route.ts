@@ -1,29 +1,42 @@
 import { NextResponse } from "next/server";
+import clientPromise from "@/lib/mongodb";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export async function GET() {
   try {
-    const scriptUrl =
-      "https://script.google.com/macros/s/AKfycbw4aDqb07zcrQ4eUhh77PhCmw9eNIt5nwPZYQ0umLsV-_sHED7V6EoYnOjNpGC7rcaw4w/exec";
+    const client = await clientPromise;
+    const db = client.db("casamento");
+    const collection = db.collection("contributions");
 
-    const response = await fetch(scriptUrl, {
-      method: "GET",
-      cache: "no-store",
-    });
+    // Soma as cotas confirmadas agrupadas por giftId
+    const pipeline = [
+      { $match: { status: "confirmado" } },
+      {
+        $group: {
+          _id: "$giftId",
+          totalQuotas: { $sum: "$quotaQuantity" },
+        },
+      },
+    ];
 
-    const text = await response.text();
+    const results = await collection.aggregate(pipeline).toArray();
 
-    let parsed: any;
-    try {
-      parsed = JSON.parse(text);
-    } catch {
-      parsed = { success: false, error: text };
+    const paidQuotasByGift: Record<string, number> = {};
+    for (const row of results) {
+      if (row._id) {
+        paidQuotasByGift[row._id] = row.totalQuotas;
+      }
     }
 
-    return NextResponse.json(parsed);
+    return NextResponse.json({
+      success: true,
+      paidQuotasByGift,
+    });
   } catch (error) {
+    console.error("Erro ao buscar presentes:", error);
+
     return NextResponse.json(
       {
         success: false,

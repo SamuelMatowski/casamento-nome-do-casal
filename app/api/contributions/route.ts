@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import clientPromise from "@/lib/mongodb";
 
 export const dynamic = "force-dynamic";
 
@@ -6,41 +7,32 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const scriptUrl =
-      "https://script.google.com/macros/s/AKfycbw4aDqb07zcrQ4eUhh77PhCmw9eNIt5nwPZYQ0umLsV-_sHED7V6EoYnOjNpGC7rcaw4w/exec";
+    const client = await clientPromise;
+    const db = client.db("casamento");
+    const collection = db.collection("contributions");
 
-    const params = new URLSearchParams({
+    const contribution = {
       giftId: body.giftId || "",
       giftName: body.giftName || "",
       giverName: body.giverName || "",
       pixPayerName: body.pixPayerName || "",
       message: body.message || "",
-      quotaQuantity: String(body.quotaQuantity || ""),
-      totalValue: String(body.totalValue || ""),
+      quotaQuantity: Number(body.quotaQuantity) || 0,
+      totalValue: Number(body.totalValue) || 0,
       status: body.status || "pendente",
+      paymentId: body.paymentId || "",
+      createdAt: new Date(),
+    };
+
+    const result = await collection.insertOne(contribution);
+
+    return NextResponse.json({
+      success: true,
+      message: "Contribuição registrada com sucesso.",
+      id: result.insertedId,
     });
-
-    // Envia como query params na URL para evitar perda no redirect do Google Script
-    const response = await fetch(`${scriptUrl}?${params.toString()}`, {
-      method: "POST",
-      redirect: "follow",
-    });
-
-    const text = await response.text();
-
-    console.log("Resposta bruta do Google Script:", text);
-    console.log("Params enviados:", Object.fromEntries(params));
-
-    let parsed: any;
-    try {
-      parsed = JSON.parse(text);
-    } catch {
-      parsed = { success: false, error: text };
-    }
-
-    return NextResponse.json(parsed);
   } catch (error) {
-    console.error("Erro na API:", error);
+    console.error("Erro ao salvar contribuição:", error);
 
     return NextResponse.json(
       {

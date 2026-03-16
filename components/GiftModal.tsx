@@ -75,7 +75,7 @@ export default function GiftModal({
           if (data.status === "approved") {
             stopPolling();
 
-            // Salva a contribuição confirmada no Google Sheets
+            // Salva a contribuição confirmada no MongoDB
             try {
               await fetch("/api/contributions", {
                 method: "POST",
@@ -89,6 +89,7 @@ export default function GiftModal({
                   quotaQuantity: contribution.quotaQuantity,
                   totalValue: contribution.totalAmount,
                   status: "confirmado",
+                  paymentId: String(paymentId),
                 }),
               });
             } catch (saveErr) {

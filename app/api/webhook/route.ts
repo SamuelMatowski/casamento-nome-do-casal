@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
+import clientPromise from "@/lib/mongodb";
 
-const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbw4aDqb07zcrQ4eUhh77PhCmw9eNIt5nwPZYQ0umLsV-_sHED7V6EoYnOjNpGC7rcaw4w/exec";
+export const dynamic = "force-dynamic";
 
 async function getPaymentFromMP(paymentId: string) {
   const token = process.env.MP_ACCESS_TOKEN?.trim();
@@ -13,14 +13,6 @@ async function getPaymentFromMP(paymentId: string) {
     }
   );
   return res.json();
-}
-
-async function saveContributionToSheets(data: Record<string, string>) {
-  const params = new URLSearchParams(data);
-  await fetch(`${GOOGLE_SCRIPT_URL}?${params.toString()}`, {
-    method: "POST",
-    redirect: "follow",
-  });
 }
 
 export async function POST(req: Request) {
@@ -40,16 +32,29 @@ export async function POST(req: Request) {
     if (payment.status === "approved") {
       const meta = payment.metadata || {};
 
-      await saveContributionToSheets({
-        giftId: meta.gift_id || "",
-        giftName: meta.gift_name || payment.description || "",
-        giverName: meta.guest_name || "",
-        pixPayerName: payment.payer?.first_name || "",
-        message: meta.message || "",
-        quotaQuantity: String(meta.quota_quantity || "1"),
-        totalValue: String(payment.transaction_amount || ""),
-        status: "confirmado",
+      const client = await clientPromise;
+      const db = client.db("casamento");
+      const collection = db.collection("contributions");
+
+      // Evita duplicata: só insere se não existir contribuição com esse paymentId
+      const existing = await collection.findOne({
+        paymentId: String(paymentId),
       });
+
+      if (!existing) {
+        await collection.insertOne({
+          giftId: meta.gift_id || "",
+          giftName: meta.gift_name || payment.description || "",
+          giverName: meta.guest_name || "",
+          pixPayerName: payment.payer?.first_name || "",
+          message: meta.message || "",
+          quotaQuantity: Number(meta.quota_quantity) || 1,
+          totalValue: Number(payment.transaction_amount) || 0,
+          status: "confirmado",
+          paymentId: String(paymentId),
+          createdAt: new Date(),
+        });
+      }
     }
 
     return NextResponse.json({ received: true });
