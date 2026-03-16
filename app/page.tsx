@@ -186,48 +186,80 @@ Agora, perto de completar 10 anos de relacionamento, chega o momento de celebrar
       </section>
 
       <section id="presenca" className="px-6 py-20">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm uppercase tracking-[0.25em] text-[#6a76a1]">
-            Presença
-          </p>
-          <h2 className="mt-3 text-3xl font-semibold md:text-4xl">
-            Confirme sua presença
-          </h2>
-          <p className="mt-4 leading-7 text-gray-700">
-            Ficaremos muito felizes em celebrar esse momento com você.
-          </p>
-             <p className="mt-4 leading-7 text-gray-700">
-            Lembre-se de inserir os dados de todos os convidados.
-          </p>
+  <div className="mx-auto max-w-3xl text-center">
+    <p className="text-sm uppercase tracking-[0.25em] text-[#6a76a1]">
+      Presença
+    </p>
 
-          <form className="mt-10 space-y-4 rounded-3xl bg-white p-8 text-left shadow-sm">
-            <input
-              type="text"
-              placeholder="Seu nome"
-              className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#6a76a1]"
-            />
-            <input
-              type="text"
-              placeholder="Telefone"
-              className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#6a76a1]"
-            />
-           <input
-  type="text"
-  placeholder="CPF"
-  className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#6a76a1]"
-/>
-            <textarea
-              placeholder="Mensagem opcional"
-              className="min-h-[140px] w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#6a76a1]"
-            />
-            <button
-              type="submit"
-              className="w-full rounded-full bg-[#6a76a1] px-6 py-4 font-medium text-white transition duration-300 hover:bg-[#596493]">
-              Confirmar presença
-            </button>
-          </form>
-        </div>
-      </section>
+    <h2 className="mt-3 text-3xl font-semibold md:text-4xl">
+      Confirme sua presença
+    </h2>
+
+    <p className="mt-4 leading-7 text-gray-700">
+      Ficaremos muito felizes em celebrar esse momento com você.
+    </p>
+
+    <p className="mt-2 leading-7 text-gray-700">
+      Lembre-se de inserir os dados de todos os convidados.
+    </p>
+
+    <form
+      onSubmit={handleRsvpSubmit}
+      className="mt-10 space-y-4 rounded-3xl bg-white p-8 text-left shadow-sm"
+    >
+      <input
+        type="text"
+        placeholder="Seu nome"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#6a76a1]"
+      />
+
+      <input
+        type="text"
+        placeholder="Telefone"
+        value={phone}
+        onChange={(e) => setPhone(e.target.value)}
+        className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#6a76a1]"
+      />
+
+      <input
+        type="text"
+        placeholder="CPF"
+        value={cpf}
+        onChange={(e) => setCpf(e.target.value)}
+        className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#6a76a1]"
+      />
+
+      <textarea
+        placeholder="Mensagem opcional"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        className="min-h-[140px] w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#6a76a1]"
+      />
+
+      {rsvpFeedback && (
+        <p
+          className={`text-sm ${
+            rsvpFeedback.includes("sucesso")
+              ? "text-green-600"
+              : "text-red-600"
+          }`}
+        >
+          {rsvpFeedback}
+        </p>
+      )}
+
+      <button
+        type="submit"
+        disabled={loadingRsvp}
+        className="w-full rounded-full bg-[#6a76a1] px-6 py-4 font-medium text-white transition duration-300 hover:bg-[#596493] disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        {loadingRsvp ? "Enviando..." : "Confirmar presença"}
+      </button>
+    </form>
+  </div>
+</section>
 
       <section id="local" className="bg-white px-6 py-20">
   <div className="mx-auto max-w-6xl">
