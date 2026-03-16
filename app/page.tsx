@@ -29,13 +29,10 @@ export default function Home() {
               especiais
             </h2>
             <p className="mt-6 leading-8 text-gray-700">
-              Nossa história começou de uma forma simples, mas cheia de
-              significado. Entre conversas, risadas e momentos inesquecíveis,
-              fomos construindo algo muito especial.
-            </p>
-            <p className="mt-4 leading-8 text-gray-700">
-              Depois de tudo o que vivemos juntos, decidimos dar o próximo passo
-              e celebrar esse grande dia com as pessoas que amamos.
+              Amanda e Nicolas se conheceram no último ano do ensino médio. O que começou de forma simples, entre conversas e convivência diária, acabou se transformando em um relacionamento que já se aproxima de uma década.
+Durante os anos de faculdade, os dois passaram boa parte do tempo em cidades diferentes: Amanda em Curitiba e Nicolas grande parte do período em Campo Mourão.  Mesmo com a distância e a rotina intensa dos estudos, o relacionamento seguiu firme ao longo de toda a graduação.
+No dia 23 de outubro de 2024, em Maceió, durante o congresso do mestrado da Amanda, Nicolas fez o pedido de noivado.
+Agora, perto de completar 10 anos de relacionamento, chega o momento de celebrar essa trajetória e iniciar oficialmente uma nova fase juntos: o casamento. Um dia preparado para reunir familiares e amigos e marcar o início de mais um capítulo dessa história.
             </p>
           </div>
 
@@ -155,6 +152,9 @@ export default function Home() {
           <p className="mt-4 leading-7 text-gray-700">
             Ficaremos muito felizes em celebrar esse momento com você.
           </p>
+             <p className="mt-4 leading-7 text-gray-700">
+            Lembre-se de inserir os dados de todos os convidados.
+          </p>
 
           <form className="mt-10 space-y-4 rounded-3xl bg-white p-8 text-left shadow-sm">
             <input
@@ -265,11 +265,13 @@ export default function Home() {
 </div>
         </div>
       </footer>
-      <GiftModal
-  gift={selectedGift}
-  isOpen={!!selectedGift}
-  onClose={() => setSelectedGift(null)}
-/>
+      {selectedGift && (
+  <GiftModal
+    gift={selectedGift}
+    isOpen={true}
+    onClose={() => setSelectedGift(null)}
+  />
+)}
     </main>
   );
 }
