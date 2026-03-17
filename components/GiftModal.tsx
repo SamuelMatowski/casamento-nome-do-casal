@@ -25,7 +25,6 @@ export default function GiftModal({
   gift,
   isOpen,
   onClose,
-  onPaymentConfirmed,
 }: GiftModalProps) {
   const maxAvailableQuotas = Math.max(gift.totalQuotas - gift.paidQuotas, 0);
 
@@ -53,64 +52,6 @@ export default function GiftModal({
     }
   }, []);
 
-  type ContributionData = {
-    giftId: string;
-    giftName: string;
-    guestName: string;
-    payerName: string;
-    message: string;
-    quotaQuantity: number;
-    totalAmount: number;
-  };
-
-  const startPolling = useCallback(
-    (paymentId: string | number, contribution: ContributionData) => {
-      stopPolling();
-
-      pollingRef.current = setInterval(async () => {
-        try {
-          const res = await fetch(`/api/check-payment?id=${paymentId}`, {
-            cache: "no-store",
-          });
-          const data = await res.json();
-
-          if (data.status === "approved") {
-            stopPolling();
-
-            // Salva a contribuição confirmada no MongoDB
-            try {
-              await fetch("/api/contributions", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  giftId: contribution.giftId,
-                  giftName: contribution.giftName,
-                  giverName: contribution.guestName,
-                  pixPayerName: contribution.payerName,
-                  message: contribution.message,
-                  quotaQuantity: contribution.quotaQuantity,
-                  totalValue: contribution.totalAmount,
-                  status: "confirmado",
-                  paymentId: String(paymentId),
-                }),
-              });
-            } catch (saveErr) {
-              console.error("Erro ao salvar contribuição:", saveErr);
-            }
-
-            setPaymentConfirmed(true);
-
-            // Atualiza os cards e a barra de progresso
-            if (onPaymentConfirmed) onPaymentConfirmed();
-          }
-        } catch {
-          // silencia erros de polling
-        }
-      }, 5000); // verifica a cada 5 segundos
-    },
-    [stopPolling]
-  );
-
   useEffect(() => {
     if (!isOpen) return;
 
@@ -126,12 +67,10 @@ export default function GiftModal({
     stopPolling();
   }, [isOpen, gift.id, maxAvailableQuotas, stopPolling]);
 
-  // Para o polling quando o modal fecha
   useEffect(() => {
     if (!isOpen) stopPolling();
   }, [isOpen, stopPolling]);
 
-  // Cleanup ao desmontar
   useEffect(() => {
     return () => stopPolling();
   }, [stopPolling]);
@@ -181,75 +120,37 @@ export default function GiftModal({
         return;
       }
 
-      if (!email.trim()) {
-        setError("Informe o e-mail do pagador.");
-        return;
-      }
-
       if (quotaQuantity < 1 || quotaQuantity > maxAvailableQuotas) {
         setError("Quantidade de cotas inválida.");
         return;
       }
 
-      const response = await fetch("/api/create-payment", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          amount: totalAmount,
-          description: `${gift.name} - ${quotaQuantity} cota(s)`,
-          name: payerName.trim(),
-          email: email.trim(),
-          guestName: guestName.trim(),
-          message: message.trim(),
-          giftId: gift.id,
-          quotaQuantity,
-        }),
+      setPixData({
+        success: true,
+        status: "manual_pix",
       });
-
-      const data: PixResponse = await response.json();
-
-      if (!response.ok || !data.success) {
-        throw new Error(data.message || "Não foi possível gerar o PIX.");
-      }
-
-      setPixData(data);
-
-      // Inicia polling para detectar confirmação automática
-      if (data.paymentId) {
-        startPolling(data.paymentId, {
-          giftId: gift.id,
-          giftName: gift.name,
-          guestName: guestName.trim(),
-          payerName: payerName.trim(),
-          message: message.trim(),
-          quotaQuantity,
-          totalAmount,
-        });
-      }
     } catch (err) {
-      console.error("Erro ao gerar PIX:", err);
+      console.error("Erro ao preparar PIX manual:", err);
 
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError("Erro ao gerar o PIX. Tente novamente.");
+        setError("Erro ao abrir instruções do PIX.");
       }
     } finally {
       setLoadingPix(false);
     }
   };
 
-  const handleCopyPix = async () => {
-    if (!pixData?.qr_code) return;
-
+  const handleCopyManualPix = async () => {
     try {
-      await navigator.clipboard.writeText(pixData.qr_code);
-      alert("Código PIX copiado com sucesso.");
+      await navigator.clipboard.writeText(
+        "0a002fe6-2ec8-43f6-8219-1da41cce3568"
+      );
+      alert("Chave PIX copiada!");
     } catch (err) {
       console.error(err);
-      alert("Não foi possível copiar o código PIX.");
+      alert("Não foi possível copiar a chave PIX.");
     }
   };
 
@@ -321,7 +222,6 @@ export default function GiftModal({
             </div>
           </div>
 
-          {/* Tela de pagamento confirmado */}
           {paymentConfirmed && (
             <div className="flex flex-col items-center gap-4 py-8 text-center">
               <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#e4e8f3]">
@@ -358,7 +258,6 @@ export default function GiftModal({
             </div>
           )}
 
-          {/* Formulário para gerar PIX */}
           {!pixData && !paymentConfirmed && (
             <div className="space-y-4">
               <div>
@@ -451,82 +350,57 @@ export default function GiftModal({
                 disabled={loadingPix || maxAvailableQuotas <= 0}
                 className="w-full rounded-2xl bg-[#6a76a1] px-5 py-3 font-semibold text-white transition hover:bg-[#596493] disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {loadingPix ? "Gerando PIX..." : "Gerar PIX"}
+                {loadingPix ? "Abrindo instruções..." : "Gerar PIX"}
               </button>
             </div>
           )}
 
-          {/* QR Code e código PIX */}
           {pixData && !paymentConfirmed && (
             <div className="space-y-5">
               <div className="rounded-2xl bg-[#e4e8f3] p-4">
                 <p className="text-sm font-semibold text-[#6a76a1]">
-                  PIX gerado com sucesso.
+                  QR Code temporariamente indisponível
+                </p>
+                <p className="mt-2 text-sm text-gray-700">
+                  Para concluir o presente, faça a transferência via chave PIX
+                  abaixo.
+                </p>
+                <p className="mt-2 text-sm text-gray-700">
+                  <span className="font-semibold">Presente:</span> {gift.name}
                 </p>
                 <p className="mt-1 text-sm text-gray-700">
-                  Presente: {gift.name}
-                </p>
-                <p className="mt-1 text-sm text-gray-700">
-                  Total: R$ {totalAmount.toFixed(2)}
-                </p>
-
-                {pixData.paymentId && (
-                  <p className="mt-1 text-xs text-gray-500">
-                    ID do pagamento: {pixData.paymentId}
-                  </p>
-                )}
-              </div>
-
-              {/* Indicador de aguardando pagamento */}
-              <div className="flex items-center gap-3 rounded-2xl border border-[#6a76a1]/20 bg-[#e4e8f3]/50 px-4 py-3">
-                <span className="relative flex h-3 w-3">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#6a76a1] opacity-75" />
-                  <span className="relative inline-flex h-3 w-3 rounded-full bg-[#6a76a1]" />
-                </span>
-                <p className="text-sm text-[#6a76a1]">
-                  Aguardando confirmação do pagamento...
+                  <span className="font-semibold">Total:</span> R${" "}
+                  {totalAmount.toFixed(2)}
                 </p>
               </div>
 
-              {pixData.qr_code_base64 && (
-                <div className="flex justify-center">
-                  <img
-                    src={`data:image/png;base64,${pixData.qr_code_base64}`}
-                    alt="QR Code PIX"
-                    className="h-64 w-64 rounded-2xl border border-gray-200 bg-white p-2"
-                  />
-                </div>
-              )}
-
-              {pixData.qr_code && (
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-gray-700">
-                    Código PIX copia e cola
-                  </label>
-                  <textarea
-                    readOnly
-                    value={pixData.qr_code}
-                    className="min-h-[140px] w-full rounded-2xl border border-gray-300 bg-gray-50 px-4 py-3 text-sm text-gray-700 outline-none"
-                  />
-                  <button
-                    onClick={handleCopyPix}
-                    className="mt-3 w-full rounded-2xl bg-[#6a76a1] px-5 py-3 font-semibold text-white transition hover:bg-[#596493]"
-                  >
-                    Copiar código PIX
-                  </button>
-                </div>
-              )}
-
-              {pixData.ticket_url && (
-                <a
-                  href={pixData.ticket_url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="block w-full rounded-2xl border border-gray-300 px-5 py-3 text-center font-medium text-gray-700 transition hover:bg-gray-50"
+              <div className="rounded-2xl border border-gray-200 bg-white p-4">
+                <label className="mb-2 block text-sm font-medium text-gray-700">
+                  Chave PIX
+                </label>
+                <textarea
+                  readOnly
+                  value="0a002fe6-2ec8-43f6-8219-1da41cce3568"
+                  className="min-h-[100px] w-full rounded-2xl border border-gray-300 bg-gray-50 px-4 py-3 text-sm text-gray-700 outline-none"
+                />
+                <button
+                  onClick={handleCopyManualPix}
+                  className="mt-3 w-full rounded-2xl bg-[#6a76a1] px-5 py-3 font-semibold text-white transition hover:bg-[#596493]"
                 >
-                  Abrir página do pagamento
-                </a>
-              )}
+                  Copiar chave PIX
+                </button>
+              </div>
+
+              <div className="rounded-2xl bg-gray-50 p-4 text-sm text-gray-700">
+                <p>
+                  <span className="font-semibold">Favorecida:</span> Amanda
+                  Venancio Trisotto
+                </p>
+                <p className="mt-2">
+                  Após o pagamento, envie o comprovante para os noivos para
+                  confirmação.
+                </p>
+              </div>
 
               <button
                 onClick={() => {
@@ -536,7 +410,7 @@ export default function GiftModal({
                 }}
                 className="w-full rounded-2xl bg-gray-100 px-5 py-3 font-medium text-gray-800 transition hover:bg-gray-200"
               >
-                Gerar outro PIX
+                Voltar
               </button>
             </div>
           )}
