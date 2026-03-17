@@ -48,6 +48,26 @@ export default function PresentesPage() {
     loadGiftProgress();
   }, [loadGiftProgress]);
 
+  // Atualiza automaticamente a cada 30 segundos
+  useEffect(() => {
+    const interval = setInterval(() => {
+      loadGiftProgress();
+    }, 30000);
+    return () => clearInterval(interval);
+  }, [loadGiftProgress]);
+
+  // Atualiza quando o usuário volta para a aba
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        loadGiftProgress();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () =>
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, [loadGiftProgress]);
+
   function handlePresent(gift: Gift) {
     setSelectedGift(gift);
     setIsModalOpen(true);
@@ -56,7 +76,8 @@ export default function PresentesPage() {
   function handleCloseModal() {
     setIsModalOpen(false);
     setSelectedGift(null);
-    loadGiftProgress();
+    // Aguarda um momento para garantir que qualquer salvamento em andamento seja concluído
+    setTimeout(() => loadGiftProgress(), 1500);
   }
 
   return (

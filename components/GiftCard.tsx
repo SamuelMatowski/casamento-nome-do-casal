@@ -50,11 +50,12 @@ export default function GiftCard({ gift, onPresent }: GiftCardProps) {
         </p>
 
         <button
-          onClick={() => onPresent(gift)}
-          className="mt-6 inline-block rounded-full bg-[#6a76a1] px-5 py-3 text-sm font-medium text-white transition duration-300 hover:bg-[#596493]"
-        >
-          Presentear
-        </button>
+  onClick={() => onPresent(gift)}
+  disabled={remainingQuotas <= 0}
+  className="mt-6 inline-block rounded-full bg-[#6a76a1] px-5 py-3 text-sm font-medium text-white transition duration-300 hover:bg-[#596493] disabled:cursor-not-allowed disabled:opacity-50"
+>
+  {remainingQuotas <= 0 ? "Esgotado" : "Presentear"}
+</button>
       </div>
     </div>
   );

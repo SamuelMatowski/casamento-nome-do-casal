@@ -24,6 +24,21 @@ export async function POST(req: Request) {
       createdAt: new Date(),
     };
 
+    // Evita duplicata: só insere se não existir contribuição com esse paymentId
+    if (body.paymentId) {
+      const existing = await collection.findOne({
+        paymentId: String(body.paymentId),
+      });
+      if (existing) {
+        return NextResponse.json({
+          success: true,
+          message: "Contribuição já registrada anteriormente.",
+          id: existing._id,
+          duplicate: true,
+        });
+      }
+    }
+
     const result = await collection.insertOne(contribution);
 
     return NextResponse.json({

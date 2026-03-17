@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Countdown from "@/components/Countdown";
@@ -11,6 +11,7 @@ import { Gift } from "../models/gift";
 
 export default function Home() {
   const [selectedGift, setSelectedGift] = useState<Gift | null>(null);
+  const [giftList, setGiftList] = useState<Gift[]>(gifts);
   const [name, setName] = useState("");
 const [phone, setPhone] = useState("");
 const [cpf, setCpf] = useState("");
@@ -55,6 +56,31 @@ const handleRsvpSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setLoadingRsvp(false);
   }
 };
+
+useEffect(() => {
+  const loadGiftProgress = async () => {
+    try {
+      const response = await fetch("/api/gifts", {
+        cache: "no-store",
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) return;
+
+      setGiftList((prev) =>
+        prev.map((gift) => ({
+          ...gift,
+          paidQuotas: data.paidQuotasByGift[gift.id] || 0,
+        }))
+      );
+    } catch (error) {
+      console.error("Erro ao carregar progresso dos presentes:", error);
+    }
+  };
+
+  loadGiftProgress();
+}, []);
 
   return (
     <main className="bg-[#fcfaf7] text-[#2b2b2b]">
@@ -147,7 +173,7 @@ Agora, perto de completar 10 anos de relacionamento, chega o momento de celebrar
     </div>
 
     <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {gifts.map((gift) => (
+   {giftList.map((gift) => (
   <GiftCard key={gift.id} gift={gift} onPresent={setSelectedGift} />
 ))}
     </div>
@@ -345,7 +371,27 @@ Agora, perto de completar 10 anos de relacionamento, chega o momento de celebrar
   <GiftModal
     gift={selectedGift}
     isOpen={true}
-    onClose={() => setSelectedGift(null)}
+    onClose={async () => {
+      setSelectedGift(null);
+
+      try {
+        const response = await fetch("/api/gifts", {
+          cache: "no-store",
+        });
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          setGiftList((prev) =>
+            prev.map((gift) => ({
+              ...gift,
+              paidQuotas: data.paidQuotasByGift[gift.id] || 0,
+            }))
+          );
+        }
+      } catch (error) {
+        console.error("Erro ao atualizar presentes:", error);
+      }
+    }}
   />
 )}
     </main>

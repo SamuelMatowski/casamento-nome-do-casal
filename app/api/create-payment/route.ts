@@ -24,6 +24,7 @@ export async function POST(req: Request) {
         transaction_amount: Number(body.amount),
         description: body.description,
         payment_method_id: "pix",
+        external_reference: `${body.giftId}-${Date.now()}`,
         payer: {
           email: body.email,
           first_name: body.name,
@@ -39,6 +40,7 @@ export async function POST(req: Request) {
     });
 
     const data = await mpRes.json();
+
     console.log("MP status:", mpRes.status);
     console.log("MP response:", data);
 
@@ -46,7 +48,10 @@ export async function POST(req: Request) {
       return NextResponse.json(
         {
           success: false,
-          message: data?.message || data?.cause?.[0]?.description || "Erro Mercado Pago",
+          message:
+            data?.message ||
+            data?.cause?.[0]?.description ||
+            "Erro Mercado Pago",
           details: data,
         },
         { status: mpRes.status }
@@ -65,6 +70,7 @@ export async function POST(req: Request) {
     });
   } catch (error: any) {
     console.error("Erro create-payment:", error);
+
     return NextResponse.json(
       { success: false, message: error?.message || "Erro interno." },
       { status: 500 }
