@@ -30,6 +30,26 @@ export default function AdminPresentesPage() {
     loadData();
   }, []);
 
+  async function handleDesfazer(id: string, giftName: string) {
+    if (!confirm(`Desfazer pagamento de "${giftName}"?`)) return;
+    try {
+      const res = await fetch("/api/admin/contributions/delete", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setMessage(`✅ Pagamento desfeito com sucesso.`);
+        loadData();
+      } else {
+        setMessage("❌ Erro ao desfazer pagamento.");
+      }
+    } catch {
+      setMessage("❌ Erro ao desfazer pagamento.");
+    }
+  }
+
   async function handleRegistrar() {
     if (!selectedGift || !giverName.trim() || quotaQuantity < 1) return;
     setLoading(true);
@@ -154,6 +174,7 @@ export default function AdminPresentesPage() {
                   <th className="p-3">Cotas</th>
                   <th className="p-3">Valor</th>
                   <th className="p-3">Data</th>
+                  <th className="p-3"></th>
                 </tr>
               </thead>
               <tbody>
@@ -164,6 +185,14 @@ export default function AdminPresentesPage() {
                     <td className="p-3">{c.quotaQuantity}</td>
                     <td className="p-3">R$ {Number(c.totalValue).toFixed(2)}</td>
                     <td className="p-3">{c.createdAt ? new Date(c.createdAt).toLocaleString("pt-BR") : "-"}</td>
+                    <td className="p-3">
+                      <button
+                        onClick={() => handleDesfazer(String(c._id), c.giftName)}
+                        className="rounded-lg bg-red-50 px-3 py-1 text-xs font-medium text-red-600 transition hover:bg-red-100"
+                      >
+                        Desfazer
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
