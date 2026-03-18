@@ -396,10 +396,6 @@ export default function GiftModal({
                   <span className="font-semibold">Favorecida:</span> Amanda
                   Venancio Trisotto
                 </p>
-                <p className="mt-2">
-                  Após o pagamento, envie o comprovante para os noivos para
-                  confirmação.
-                </p>
               </div>
 
               <button
