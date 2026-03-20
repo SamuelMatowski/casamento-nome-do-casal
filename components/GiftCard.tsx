@@ -36,7 +36,7 @@ export default function GiftCard({ gift, onPresent }: GiftCardProps) {
         </p>
 
         <p className="mt-2 text-sm text-gray-700">
-          {gift.paidQuotas}/{gift.totalQuotas} cotas confirmadas
+          {isEsgotado ? gift.totalQuotas : gift.paidQuotas}/{gift.totalQuotas} cotas confirmadas
         </p>
 
         <div className="mt-3 h-3 w-full overflow-hidden rounded-full bg-[#e4e8f3]">

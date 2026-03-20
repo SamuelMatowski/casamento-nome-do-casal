@@ -142,7 +142,8 @@ image: "/gifts/sofa.png",
 totalValue: 1560,
 quotaValue: 260,
 totalQuotas: 6,
-paidQuotas: 0
+paidQuotas: 0,
+forceEsgotado: true
 },
 
 {
@@ -374,7 +375,8 @@ image: "/gifts/potpet.png",
 totalValue: 280,
 quotaValue: 280,
 totalQuotas: 1,
-paidQuotas: 0
+paidQuotas: 0,
+forceEsgotado: true
 },
 
 {
