@@ -7,4 +7,5 @@ export type Gift = {
   quotaValue: number;
   totalQuotas: number;
   paidQuotas: number;
+  forceEsgotado?: boolean;
 };

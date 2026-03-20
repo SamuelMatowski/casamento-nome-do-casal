@@ -6,8 +6,9 @@ type GiftCardProps = {
 };
 
 export default function GiftCard({ gift, onPresent }: GiftCardProps) {
-  const remainingQuotas = gift.totalQuotas - gift.paidQuotas;
-  const progress = (gift.paidQuotas / gift.totalQuotas) * 100;
+  const isEsgotado = gift.forceEsgotado || gift.paidQuotas >= gift.totalQuotas;
+  const remainingQuotas = isEsgotado ? 0 : gift.totalQuotas - gift.paidQuotas;
+  const progress = isEsgotado ? 100 : (gift.paidQuotas / gift.totalQuotas) * 100;
 
   return (
     <div className="overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md">
@@ -51,10 +52,10 @@ export default function GiftCard({ gift, onPresent }: GiftCardProps) {
 
         <button
   onClick={() => onPresent(gift)}
-  disabled={remainingQuotas <= 0}
+  disabled={isEsgotado}
   className="mt-6 inline-block rounded-full bg-[#6a76a1] px-5 py-3 text-sm font-medium text-white transition duration-300 hover:bg-[#596493] disabled:cursor-not-allowed disabled:opacity-50"
 >
-  {remainingQuotas <= 0 ? "Esgotado" : "Presentear"}
+  {isEsgotado ? "Esgotado" : "Presentear"}
 </button>
       </div>
     </div>

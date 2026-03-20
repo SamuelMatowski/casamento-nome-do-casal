@@ -241,7 +241,8 @@ image: "/gifts/churrasco.png",
 totalValue: 150,
 quotaValue: 75 ,
 totalQuotas: 2,
-paidQuotas: 0
+paidQuotas: 0,
+forceEsgotado: true
 },
 
 {
@@ -384,7 +385,8 @@ image: "/gifts/petisco.png",
 totalValue: 100,
 quotaValue: 100,
 totalQuotas: 1,
-paidQuotas: 0
+paidQuotas: 0,
+forceEsgotado: true
 },
 
 {
