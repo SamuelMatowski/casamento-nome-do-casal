@@ -9,6 +9,15 @@ body {
   padding: 0;
   background: #fcfaf7;
   color: #2b2b2b;
+  font-family: var(--font-jost), sans-serif;
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-playfair), serif;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
 }
 
 :root {
@@ -17,10 +26,4 @@ body {
   --soft-bg: #eef1f8;
   --text: #2b2b2b;
   --cream: #fcfaf7;
-}
-
-h1,
-h2,
-h3 {
-  letter-spacing: 0.02em;
 }

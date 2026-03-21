@@ -88,17 +88,20 @@ useEffect(() => {
       <Hero />
       <Countdown />
 
-      <section id="historia" className="px-6 py-20">
+      <section id="historia" className="px-6 py-16">
         <div className="mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-2">
           <div>
-            <p className="text-sm uppercase tracking-[0.25em] text-[#6a76a1]">
-              Nossa História
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold md:text-4xl">
+            <div className="flex items-center gap-3">
+              <div className="h-px w-8 bg-[#6a76a1]/40" />
+              <p className="font-[family-name:var(--font-jost)] text-xs uppercase tracking-[0.3em] text-[#6a76a1]">
+                Nossa História
+              </p>
+            </div>
+            <h2 className="mt-4 text-3xl font-semibold md:text-4xl">
               Um amor construído com carinho, parceria e muitos momentos
               especiais
             </h2>
-            <p className="mt-6 leading-8 text-gray-700">
+            <p className="mt-6 font-[family-name:var(--font-jost)] leading-8 text-gray-600">
               Amanda e Nicolas se conheceram no último ano do ensino médio. O que começou de forma simples, entre conversas e convivência diária, acabou se transformando em um relacionamento que já se aproxima de uma década.
 Durante os anos de faculdade, os dois passaram boa parte do tempo em cidades diferentes: Amanda em Curitiba e Nicolas grande parte do período em Campo Mourão.  Mesmo com a distância e a rotina intensa dos estudos, o relacionamento seguiu firme ao longo de toda a graduação.
 No dia 23 de outubro de 2024, em Maceió, durante o congresso do mestrado da Amanda, Nicolas fez o pedido de noivado.
@@ -116,56 +119,68 @@ Agora, perto de completar 10 anos de relacionamento, chega o momento de celebrar
         </div>
       </section>
 
-      <section id="casamento" className="bg-white px-6 py-20">
+      <section id="casamento" className="bg-white px-6 py-16">
         <div className="mx-auto max-w-6xl">
           <div className="text-center">
-            <p className="text-sm uppercase tracking-[0.25em] text-[#6a76a1]">
-              O Casamento
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold md:text-4xl">
+            <div className="flex items-center justify-center gap-3">
+              <div className="h-px w-10 bg-[#6a76a1]/40" />
+              <p className="font-[family-name:var(--font-jost)] text-xs uppercase tracking-[0.3em] text-[#6a76a1]">
+                O Casamento
+              </p>
+              <div className="h-px w-10 bg-[#6a76a1]/40" />
+            </div>
+            <h2 className="mt-4 text-3xl font-semibold md:text-4xl">
               Informações importantes
             </h2>
           </div>
 
-         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-  <div className="rounded-2xl bg-[var(--soft-bg)] p-6 transition duration-300 hover:-translate-y-1 hover:shadow-md">
-    <h3 className="text-xl font-semibold">Data</h3>
-    <p className="mt-3 text-lg font-semibold text-[#6a76a1]">
-      12 de Abril de 2026
-    </p>
-  </div>
+          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+            <div className="relative overflow-hidden rounded-2xl bg-[var(--soft-bg)] p-6 transition duration-300 hover:-translate-y-1 hover:shadow-md">
+              <div className="absolute inset-x-0 top-0 h-0.5 bg-[#6a76a1]/30" />
+              <p className="font-[family-name:var(--font-jost)] text-xs uppercase tracking-widest text-gray-400">Data</p>
+              <p className="mt-3 font-[family-name:var(--font-playfair)] text-xl font-semibold text-[#6a76a1]">
+                12 de Abril de 2026
+              </p>
+            </div>
 
-  <div className="rounded-2xl bg-[var(--soft-bg)] p-6 transition duration-300 hover:-translate-y-1 hover:shadow-md">
-    <h3 className="text-xl font-semibold">Horário</h3>
-    <p className="mt-3 text-lg font-semibold text-[#6a76a1]">
-      12:00 às 20:00
-    </p>
-  </div>
+            <div className="relative overflow-hidden rounded-2xl bg-[var(--soft-bg)] p-6 transition duration-300 hover:-translate-y-1 hover:shadow-md">
+              <div className="absolute inset-x-0 top-0 h-0.5 bg-[#6a76a1]/30" />
+              <p className="font-[family-name:var(--font-jost)] text-xs uppercase tracking-widest text-gray-400">Horário</p>
+              <p className="mt-3 font-[family-name:var(--font-playfair)] text-xl font-semibold text-[#6a76a1]">
+                12:00 às 20:00
+              </p>
+            </div>
 
-  <div className="rounded-2xl bg-[var(--soft-bg)] p-6 transition duration-300 hover:-translate-y-1 hover:shadow-md">
-    <h3 className="text-xl font-semibold">Local</h3>
-    <p className="mt-3 text-lg font-semibold text-[#6a76a1]">APCEF/PR</p>
-    <p className="text-lg font-semibold text-[#6a76a1]">Salão Gourmet 11</p>
-  </div>
+            <div className="relative overflow-hidden rounded-2xl bg-[var(--soft-bg)] p-6 transition duration-300 hover:-translate-y-1 hover:shadow-md">
+              <div className="absolute inset-x-0 top-0 h-0.5 bg-[#6a76a1]/30" />
+              <p className="font-[family-name:var(--font-jost)] text-xs uppercase tracking-widest text-gray-400">Local</p>
+              <p className="mt-3 font-[family-name:var(--font-playfair)] text-xl font-semibold text-[#6a76a1]">APCEF/PR</p>
+              <p className="font-[family-name:var(--font-jost)] text-sm text-gray-500">Salão Gourmet 11</p>
+            </div>
 
-  <div className="rounded-2xl bg-[var(--soft-bg)] p-6 transition duration-300 hover:-translate-y-1 hover:shadow-md">
-    <h3 className="text-xl font-semibold">Traje</h3>
-    <p className="mt-3 text-lg font-semibold text-[#6a76a1]">Casual</p>
-  </div>
-</div>
+            <div className="relative overflow-hidden rounded-2xl bg-[var(--soft-bg)] p-6 transition duration-300 hover:-translate-y-1 hover:shadow-md">
+              <div className="absolute inset-x-0 top-0 h-0.5 bg-[#6a76a1]/30" />
+              <p className="font-[family-name:var(--font-jost)] text-xs uppercase tracking-widest text-gray-400">Traje</p>
+              <p className="mt-3 font-[family-name:var(--font-playfair)] text-xl font-semibold text-[#6a76a1]">Casual</p>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section id="presentes" className="px-6 py-20">
+      <section id="presentes" className="px-6 py-16">
   <div className="mx-auto max-w-6xl">
     <div className="text-center">
-      <p className="text-sm uppercase tracking-[0.25em] text-[#6a76a1]">
-        Lista de Presentes
-      </p>
-      <h2 className="mt-3 text-3xl font-semibold md:text-4xl">
+      <div className="flex items-center justify-center gap-3">
+        <div className="h-px w-10 bg-[#6a76a1]/40" />
+        <p className="font-[family-name:var(--font-jost)] text-xs uppercase tracking-[0.3em] text-[#6a76a1]">
+          Lista de Presentes
+        </p>
+        <div className="h-px w-10 bg-[#6a76a1]/40" />
+      </div>
+      <h2 className="mt-4 text-3xl font-semibold md:text-4xl">
         Sugestões para nos presentear
       </h2>
-      <p className="mx-auto mt-4 max-w-2xl leading-7 text-gray-700">
+      <p className="mx-auto mt-4 max-w-2xl font-[family-name:var(--font-jost)] leading-7 text-gray-500">
         Criamos algumas sugestões com muito carinho. Os presentes são
         simbólicos e nos ajudarão a viver esse novo capítulo com ainda
         mais alegria.
@@ -180,13 +195,17 @@ Agora, perto de completar 10 anos de relacionamento, chega o momento de celebrar
   </div>
 </section>
 
-      <section id="fotos" className="bg-white px-6 py-20">
+      <section id="fotos" className="bg-white px-6 py-16">
         <div className="mx-auto max-w-6xl">
           <div className="text-center">
-            <p className="text-sm uppercase tracking-[0.25em] text-[#6a76a1]">
-              Fotos
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold md:text-4xl">
+            <div className="flex items-center justify-center gap-3">
+              <div className="h-px w-10 bg-[#6a76a1]/40" />
+              <p className="font-[family-name:var(--font-jost)] text-xs uppercase tracking-[0.3em] text-[#6a76a1]">
+                Fotos
+              </p>
+              <div className="h-px w-10 bg-[#6a76a1]/40" />
+            </div>
+            <h2 className="mt-4 text-3xl font-semibold md:text-4xl">
               Alguns momentos especiais
             </h2>
           </div>
@@ -211,34 +230,35 @@ Agora, perto de completar 10 anos de relacionamento, chega o momento de celebrar
         </div>
       </section>
 
-      <section id="presenca" className="px-6 py-20">
+      <section id="presenca" className="px-6 py-16">
   <div className="mx-auto max-w-3xl text-center">
-    <p className="text-sm uppercase tracking-[0.25em] text-[#6a76a1]">
-      Presença
-    </p>
+    <div className="flex items-center justify-center gap-3">
+      <div className="h-px w-10 bg-[#6a76a1]/40" />
+      <p className="font-[family-name:var(--font-jost)] text-xs uppercase tracking-[0.3em] text-[#6a76a1]">
+        Presença
+      </p>
+      <div className="h-px w-10 bg-[#6a76a1]/40" />
+    </div>
 
-    <h2 className="mt-3 text-3xl font-semibold md:text-4xl">
+    <h2 className="mt-4 text-3xl font-semibold md:text-4xl">
       Confirme sua presença
     </h2>
 
-    <p className="mt-4 leading-7 text-gray-700">
+    <p className="mt-4 font-[family-name:var(--font-jost)] leading-7 text-gray-500">
       Ficaremos muito felizes em celebrar esse momento com você.
-    </p>
-
-    <p className="mt-2 leading-7 text-gray-700">
       Lembre-se de inserir os dados de todos os convidados.
     </p>
 
     <form
       onSubmit={handleRsvpSubmit}
-      className="mt-10 space-y-4 rounded-3xl bg-white p-8 text-left shadow-sm"
+      className="mt-8 space-y-3 rounded-3xl bg-white p-8 text-left shadow-sm"
     >
       <input
         type="text"
         placeholder="Seu nome completo"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#6a76a1]"
+        className="w-full rounded-xl border border-gray-100 bg-[#fcfaf7] px-4 py-3 font-[family-name:var(--font-jost)] text-sm outline-none transition focus:border-[#6a76a1] focus:bg-white"
       />
 
       <input
@@ -246,7 +266,7 @@ Agora, perto de completar 10 anos de relacionamento, chega o momento de celebrar
         placeholder="Telefone"
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
-        className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#6a76a1]"
+        className="w-full rounded-xl border border-gray-100 bg-[#fcfaf7] px-4 py-3 font-[family-name:var(--font-jost)] text-sm outline-none transition focus:border-[#6a76a1] focus:bg-white"
       />
 
       <input
@@ -254,19 +274,19 @@ Agora, perto de completar 10 anos de relacionamento, chega o momento de celebrar
         placeholder="CPF"
         value={cpf}
         onChange={(e) => setCpf(e.target.value)}
-        className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#6a76a1]"
+        className="w-full rounded-xl border border-gray-100 bg-[#fcfaf7] px-4 py-3 font-[family-name:var(--font-jost)] text-sm outline-none transition focus:border-[#6a76a1] focus:bg-white"
       />
 
       <textarea
         placeholder="Mensagem opcional"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        className="min-h-[140px] w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#6a76a1]"
+        className="min-h-[120px] w-full rounded-xl border border-gray-100 bg-[#fcfaf7] px-4 py-3 font-[family-name:var(--font-jost)] text-sm outline-none transition focus:border-[#6a76a1] focus:bg-white"
       />
 
       {rsvpFeedback && (
         <p
-          className={`text-sm ${
+          className={`font-[family-name:var(--font-jost)] text-sm ${
             rsvpFeedback.includes("sucesso")
               ? "text-green-600"
               : "text-red-600"
@@ -279,7 +299,7 @@ Agora, perto de completar 10 anos de relacionamento, chega o momento de celebrar
       <button
         type="submit"
         disabled={loadingRsvp}
-        className="w-full rounded-full bg-[#6a76a1] px-6 py-4 font-medium text-white transition duration-300 hover:bg-[#596493] disabled:cursor-not-allowed disabled:opacity-60"
+        className="w-full rounded-full bg-[#6a76a1] px-6 py-3.5 font-[family-name:var(--font-jost)] text-sm font-medium tracking-wide text-white transition duration-300 hover:bg-[#596493] disabled:cursor-not-allowed disabled:opacity-60"
       >
         {loadingRsvp ? "Enviando..." : "Confirmar presença"}
       </button>
@@ -287,20 +307,24 @@ Agora, perto de completar 10 anos de relacionamento, chega o momento de celebrar
   </div>
 </section>
 
-      <section id="local" className="bg-white px-6 py-20">
+      <section id="local" className="bg-white px-6 py-16">
   <div className="mx-auto max-w-6xl">
     <div className="text-center">
-      <p className="text-sm uppercase tracking-[0.25em] text-[#6a76a1]">
-        Local
-      </p>
-      <h2 className="mt-3 text-3xl font-semibold md:text-4xl">
+      <div className="flex items-center justify-center gap-3">
+        <div className="h-px w-10 bg-[#6a76a1]/40" />
+        <p className="font-[family-name:var(--font-jost)] text-xs uppercase tracking-[0.3em] text-[#6a76a1]">
+          Local
+        </p>
+        <div className="h-px w-10 bg-[#6a76a1]/40" />
+      </div>
+      <h2 className="mt-4 text-3xl font-semibold md:text-4xl">
         Como chegar
       </h2>
 
-      <div className="mt-6 space-y-1 text-gray-700">
-        <p className="text-lg font-semibold text-[#6a76a1]">APCEF/PR</p>
-        <p>Rua Cap. Leônidas Marques, 3020 - Uberaba</p>
-        <p>Curitiba/PR - Salão Gourmet 11</p>
+      <div className="mt-4 space-y-1">
+        <p className="font-[family-name:var(--font-playfair)] text-xl font-semibold text-[#6a76a1]">APCEF/PR</p>
+        <p className="font-[family-name:var(--font-jost)] text-sm text-gray-500">Rua Cap. Leônidas Marques, 3020 - Uberaba</p>
+        <p className="font-[family-name:var(--font-jost)] text-sm text-gray-500">Curitiba/PR · Salão Gourmet 11</p>
       </div>
     </div>
 
@@ -336,35 +360,39 @@ Agora, perto de completar 10 anos de relacionamento, chega o momento de celebrar
   </div>
 </section>
 
-      <footer className="bg-[#2b2b2b] px-6 py-12 text-white">
+      <footer className="bg-[#2b2b2b] px-6 py-14 text-white">
         <div className="mx-auto max-w-6xl text-center">
-          <h3 className="text-2xl font-semibold">Amanda & Nicolas</h3>
-          <p className="mt-3 text-white/80">12 de Abril de 2026</p>
-          <p className="mt-4 text-white/80">
+          <h3 className="font-[family-name:var(--font-playfair)] text-3xl font-semibold">Amanda & Nicolas</h3>
+          <div className="mx-auto mt-3 flex items-center justify-center gap-3">
+            <div className="h-px w-10 bg-white/20" />
+            <p className="font-[family-name:var(--font-jost)] text-sm font-light tracking-widest text-white/60">12 de Abril de 2026</p>
+            <div className="h-px w-10 bg-white/20" />
+          </div>
+          <p className="mt-4 font-[family-name:var(--font-jost)] text-sm font-light text-white/60">
             Estamos ansiosos para celebrar esse momento com vocês.
           </p>
 
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-6 text-sm text-white/80">
-  <a href="#historia">Nossa História</a>
-  <a href="#casamento">O Casamento</a>
-  <a href="#presentes">Presentes</a>
-  <a href="#presenca">Presença</a>
-  <a href="#local">Local</a>
-</div>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-6 font-[family-name:var(--font-jost)] text-xs uppercase tracking-widest text-white/50">
+            <a href="#historia" className="transition hover:text-white/90">Nossa História</a>
+            <a href="#casamento" className="transition hover:text-white/90">O Casamento</a>
+            <a href="#presentes" className="transition hover:text-white/90">Presentes</a>
+            <a href="#presenca" className="transition hover:text-white/90">Presença</a>
+            <a href="#local" className="transition hover:text-white/90">Local</a>
+          </div>
 
-<div className="mt-10 border-t border-white/20 pt-6 text-sm text-white/60">
-  <p>
-    Developed by Samuel Lorenzo Matowski • Gostou do site?{" "}
-    <a
-      href="https://wa.me/5541996736548"
-      target="_blank"
-      rel="noreferrer"
-      className="underline transition hover:text-white"
-    >
-       Fale comigo
-    </a>
-  </p>
-</div>
+          <div className="mt-10 border-t border-white/10 pt-6 font-[family-name:var(--font-jost)] text-xs text-white/40">
+            <p>
+              Developed by Samuel Lorenzo Matowski · Gostou do site?{" "}
+              <a
+                href="https://wa.me/5541996736548"
+                target="_blank"
+                rel="noreferrer"
+                className="underline transition hover:text-white/70"
+              >
+                Fale comigo
+              </a>
+            </p>
+          </div>
         </div>
       </footer>
       {selectedGift && (
